@@ -1,5 +1,12 @@
 import { useColorScheme } from "@mui/material/styles";
-import { FormControl, InputLabel, MenuItem, Select, Box } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Box,
+  Container,
+} from "@mui/material";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SettingsSystemDaydreamIcon from "@mui/icons-material/SettingsSystemDaydream";
@@ -44,9 +51,39 @@ function App() {
     );
   }
   return (
-    <>
-      <SelectMode />
-    </>
+    <Container sx={{ height: "100vh" }} disableGutters maxWidth="false">
+      <Box
+        sx={{
+          backgroundColor: "primary.light",
+          width: "100%",
+          height: (theme) => theme.Custom.headerHeight,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <SelectMode />
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "primary.dark",
+          width: "100%",
+          height: (theme) => theme.Custom.navbarHeight,
+          display: "flex",
+          alignItems: "center",
+        }}
+      ></Box>
+      <Box
+        sx={{
+          width: "100px",
+          display: "flex",
+          height: (theme) =>
+            `calc(100vh - ${theme.Custom.headerHeight} - ${theme.Custom.navbarHeight})`,
+          alignItems: "center",
+        }}
+      >
+        content
+      </Box>
+    </Container>
   );
 }
 

@@ -3,6 +3,10 @@ import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 // A custom theme for this app
 const theme = extendTheme({
+  Custom: {
+    headerHeight: "50px",
+    navbarHeight: "58px",
+  },
   colorSchemes: {
     light: {
       palette: {
