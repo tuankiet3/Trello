@@ -11,7 +11,7 @@ function SelectMode() {
   const { mode, setMode } = useColorScheme(); // save theme to local storage
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl size="small">
       <InputLabel id="label-select-dark-light-mode">Mode</InputLabel>
       <Select
         labelId="label-select-dark-light-mode"

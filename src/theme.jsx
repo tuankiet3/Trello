@@ -21,6 +21,39 @@ const theme = extendTheme({
       },
     },
   },
+  components: {
+    // Name of the component
+    MuiButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          textTransform: "none",
+          fontSize: "0.875rem",
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: "0.875rem",
+        }),
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: "0.875rem",
+        }),
+        notchedOutline: ({ theme }) => ({
+          borderColor: theme.palette.primary.main,
+          color: theme.palette.primary.main,
+        }),
+      },
+    },
+  },
   // ...other properties
 });
 

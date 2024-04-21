@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-function BoardContent() {
+function  BoardContent() {
   return (
     <Box
       sx={{
