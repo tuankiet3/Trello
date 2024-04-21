@@ -16,6 +16,7 @@ import Starred from "./Menu/Starred";
 import Templates from "./Menu/Templates";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Profiles from "./Menu/Profiles";
 function AppBar() {
   return (
     <Box
@@ -65,9 +66,10 @@ function AppBar() {
             <NotificationsNoneIcon sx={{ cursor: "pointer" }} />
           </Badge>
         </Tooltip>
-        <Tooltip title="Notification">
+        <Tooltip title="Help">
           <HelpOutlineIcon sx={{ cursor: "pointer" }} />
         </Tooltip>
+        <Profiles />
       </Box>
     </Box>
   );
