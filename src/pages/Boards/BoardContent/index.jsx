@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-function  BoardContent() {
+function BoardContent() {
   return (
     <Box
       sx={{
@@ -10,6 +10,8 @@ function  BoardContent() {
         height: (theme) =>
           `calc(100vh - ${theme.Custom.headerHeight} - ${theme.Custom.navbarHeight})`,
         alignItems: "center",
+        bgcolor: (theme) =>
+          theme.palette.mode === "dark" ? "#2c3e50" : "#1976d2",
       }}
     >
       content

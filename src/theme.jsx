@@ -1,4 +1,3 @@
-import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
 // A custom theme for this app
@@ -7,20 +6,20 @@ const theme = extendTheme({
     headerHeight: "58px",
     navbarHeight: "60px",
   },
-  colorSchemes: {
-    light: {
-      palette: {
-        primary: teal,
-        secondary: deepOrange,
-      },
-    },
-    dark: {
-      palette: {
-        primary: cyan,
-        secondary: orange,
-      },
-    },
-  },
+  // colorSchemes: {
+  //   light: {
+  //     palette: {
+  //       primary: teal,
+  //       secondary: deepOrange,
+  //     },
+  //   },
+  //   dark: {
+  //     palette: {
+  //       primary: cyan,
+  //       secondary: orange,
+  //     },
+  //   },
+  // },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -52,22 +51,22 @@ const theme = extendTheme({
     },
     MuiFormLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root: () => ({
+          // color: theme.palette.primary.main,
           fontSize: "0.875rem",
         }),
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.primary.main,
+        root: () => ({
+          // color: theme.palette.primary.main,
           fontSize: "0.875rem",
         }),
-        notchedOutline: ({ theme }) => ({
-          borderColor: theme.palette.primary.main,
-          color: theme.palette.primary.main,
-        }),
+        // notchedOutline: ({ theme }) => ({
+        //   borderColor: theme.palette.primary.main,
+        //   // color: theme.palette.primary.main,
+        // }),
       },
     },
   },
