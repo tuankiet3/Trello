@@ -1,25 +1,19 @@
 import { experimental_extendTheme as extendTheme } from "@mui/material/styles";
 
+const APPBAR_HEIGHT = "58px";
+const BOARBAR_HEIGHT = "60px";
+const BOARD_CONTENT_HEIGHT = `calc(100vh - ${BOARBAR_HEIGHT} - ${APPBAR_HEIGHT})`;
+const HEADER_HEIGHT = "50px";
+const FOOTER_HEIGHT = "58px";
 // A custom theme for this app
 const theme = extendTheme({
   Custom: {
-    headerHeight: "58px",
-    navbarHeight: "60px",
+    appBarHeight: APPBAR_HEIGHT,
+    boarBarHeight: BOARBAR_HEIGHT,
+    boarContent: BOARD_CONTENT_HEIGHT,
+    contentHeaderHeight: HEADER_HEIGHT,
+    contentFooterHeight: FOOTER_HEIGHT,
   },
-  // colorSchemes: {
-  //   light: {
-  //     palette: {
-  //       primary: teal,
-  //       secondary: deepOrange,
-  //     },
-  //   },
-  //   dark: {
-  //     palette: {
-  //       primary: cyan,
-  //       secondary: orange,
-  //     },
-  //   },
-  // },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -29,11 +23,14 @@ const theme = extendTheme({
             height: "8px",
           },
           "*::-webkit-scrollbar-thumb": {
-            backgroundColor: "red",
+            // m: "0 5px",
+            // p: "0, 5px",
+            m: "5px",
+            backgroundColor: "#ced0da",
             borderRadius: "8px",
           },
           "*::-webkit-scrollbar-thumb:hover": {
-            backgroundColor: "blue",
+            backgroundColor: "#bfc2cf",
           },
         },
       },

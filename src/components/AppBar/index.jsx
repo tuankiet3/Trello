@@ -27,7 +27,7 @@ function AppBar() {
       px={2}
       sx={{
         width: "100%",
-        height: (theme) => theme.Custom.headerHeight,
+        height: (theme) => theme.Custom.appBarHeight,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",

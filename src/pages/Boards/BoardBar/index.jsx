@@ -23,9 +23,8 @@ function BoardBar() {
     <Box
       px={2}
       sx={{
-        borderBottom: "2px solid #fff ",
         width: "100%",
-        height: (theme) => theme.Custom.headerHeight,
+        height: (theme) => theme.Custom.boarBarHeight,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -91,6 +90,11 @@ function BoardBar() {
               width: "32px",
               height: "32px",
               border: "none",
+              color: "white",
+              cursor: "pointer",
+              "&:first-of-type": {
+                bgcolor: "#a4b0be",
+              },
             },
             gap: "10px",
           }}

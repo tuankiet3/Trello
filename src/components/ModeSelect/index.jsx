@@ -11,7 +11,7 @@ function SelectMode() {
   const { mode, setMode } = useColorScheme(); // save theme to local storage
 
   return (
-    <FormControl size="small" sx={{ minWidth: "100px" }}>
+    <FormControl size="small" sx={{ minWidth: "120px" }}>
       <InputLabel
         id="label-select-dark-light-mode"
         sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
