@@ -21,7 +21,19 @@ import {
   ContentPaste,
 } from "@mui/icons-material";
 import ListCard from "./ListCard";
-function Column() {
+import PropTypes from "prop-types";
+import { mapOrder } from "~/utils/sort";
+
+Column.propTypes = {
+  column: PropTypes.shape({
+    column: PropTypes.object,
+    title: PropTypes.string,
+    cards: PropTypes.object,
+    cardOrderIds: PropTypes.object,
+  }).isRequired,
+};
+
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -30,6 +42,7 @@ function Column() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
   return (
     <Box
       sx={{
@@ -55,24 +68,24 @@ function Column() {
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Columns Title
+          {column?.title}
         </Typography>
         <Box>
           <ExpandMoreIcon
-            id="basic-button-workspaces"
-            aria-controls={open ? "basic-menu-workspaces" : undefined}
+            id="basic-button-column"
+            aria-controls={open ? "basic-menu-column" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
             sx={{ color: "text.primary", cursor: "pointer" }}
           ></ExpandMoreIcon>
           <Menu
-            id="basic-menu-workspaces"
+            id="basic-menu-column"
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
             MenuListProps={{
-              "aria-labelledby": "basic-button-workspaces",
+              "aria-labelledby": "basic-button-column",
             }}
           >
             <MenuItem>
@@ -116,7 +129,7 @@ function Column() {
         </Box>
       </Box>
       {/* content */}
-      <ListCard />
+      <ListCard cards={orderedCards} />
       {/* footer */}
       <Box
         sx={{

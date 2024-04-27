@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import Card from "./Card";
+import PropTypes from "prop-types";
 
-function ListCard() {
+function ListCard({ cards }) {
   return (
     <Box
       sx={{
@@ -20,9 +21,15 @@ function ListCard() {
           - ${theme.Custom.contentHeaderHeight})`,
       }}
     >
-      <Card />
+      {cards?.map((card) => (
+        <Card card={card} key={card?._id} />
+      ))}
     </Box>
   );
 }
+
+ListCard.propTypes = {
+  cards: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
 
 export default ListCard;

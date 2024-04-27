@@ -9,34 +9,68 @@ import { Card as MuiCard } from "@mui/material";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import PeopleIcon from "@mui/icons-material/People";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
-function Card() {
+import PropTypes from "prop-types";
+
+Card.propTypes = {
+  card: PropTypes.shape({
+    card: PropTypes.object,
+    title: PropTypes.string,
+    cover: PropTypes.string,
+    memberIds: PropTypes.object,
+    comments: PropTypes.object,
+    attachments: PropTypes.object,
+  }),
+};
+
+function Card({ card }) {
+  const showCardActions = () => {
+    return (
+      !!card.memberIds?.length ||
+      !!card.comments?.length ||
+      !!card.attachments?.length
+    );
+  };
+
   return (
     <MuiCard
       sx={{
         maxWidth: 345,
         boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
         overflow: "unset",
+        "&:hover": {
+          cursor: "pointer",
+        },
       }}
     >
-      <CardMedia
-        sx={{ height: 140 }}
-        image="https://images.unsplash.com/photo-1713624130701-b77e59e03ce6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8"
-        title="green iguana"
-      />
+      {card.cover && (
+        <CardMedia
+          sx={{ height: 140 }}
+          image={card.cover}
+          title="green iguana"
+        />
+      )}
       <CardContent sx={{ "&:last-child": { pb: "16px" } }}>
-        <Typography variant="body2">Trungquandev Mern stack</Typography>
+        <Typography variant="body2">{card.title}</Typography>
       </CardContent>
-      <CardActions sx={{ p: "0 8px 8px 8px" }}>
-        <Button size="small" startIcon={<PeopleIcon />}>
-          20
-        </Button>
-        <Button size="small" startIcon={<ModeCommentIcon />}>
-          10
-        </Button>
-        <Button size="small" startIcon={<AttachmentIcon />}>
-          10
-        </Button>
-      </CardActions>
+      {showCardActions() && (
+        <CardActions sx={{ p: "0 8px 8px 8px" }}>
+          {!!card.memberIds?.length && (
+            <Button size="small" startIcon={<PeopleIcon />}>
+              {card.memberIds.length}
+            </Button>
+          )}
+          {!!card.comments?.length && (
+            <Button size="small" startIcon={<ModeCommentIcon />}>
+              {card.comments.length}
+            </Button>
+          )}
+          {!!card.attachments?.length && (
+            <Button size="small" startIcon={<AttachmentIcon />}>
+              {card.attachments.length}
+            </Button>
+          )}
+        </CardActions>
+      )}
     </MuiCard>
   );
 }

@@ -5,7 +5,10 @@ import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import BoltIcon from "@mui/icons-material/Bolt";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-const comonSyled = {
+import capitalizeFirstLetter from "~/utils/formatters";
+import PropTypes from "prop-types";
+
+const commonSyled = {
   border: "none",
   bgcolor: "transparents",
   paddingX: "5px",
@@ -18,7 +21,15 @@ const comonSyled = {
     bgcolor: "#2d3436  !important",
   },
 };
-function BoardBar() {
+
+BoardBar.propTypes = {
+  board: PropTypes.shape({
+    title: PropTypes.string,
+    type: PropTypes.string,
+  }),
+};
+
+function BoardBar({ board }) {
   return (
     <Box
       px={2}
@@ -37,37 +48,37 @@ function BoardBar() {
       <Box sx={{ display: "flex", alignItems: "center" }} gap={2}>
         <Chip
           icon={<DashboardRoundedIcon />}
-          label="With Icon"
+          label={board?.title}
           variant="outlined"
-          sx={comonSyled}
+          sx={commonSyled}
           clickable
         />
         <Chip
           icon={<VpnLockRoundedIcon />}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           variant="outlined"
-          sx={comonSyled}
+          sx={commonSyled}
           clickable
         />
         <Chip
           icon={<AddToDriveIcon />}
           label="Add To Google Drive"
           variant="outlined"
-          sx={comonSyled}
+          sx={commonSyled}
           clickable
         />
         <Chip
           icon={<BoltIcon />}
           label="Automation "
           variant="outlined"
-          sx={comonSyled}
+          sx={commonSyled}
           clickable
         />
         <Chip
           icon={<FilterListIcon />}
           label="Filter"
           variant="outlined"
-          sx={comonSyled}
+          sx={commonSyled}
           clickable
         />
       </Box>

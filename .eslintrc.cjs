@@ -8,6 +8,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
   ],
   rules: {
+    "react/prop-types": "off",
     "no-restricted-imports": [
       "error",
       {
