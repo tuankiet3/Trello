@@ -29,7 +29,7 @@ export const mockData = {
             title: "Title of card 01",
             description: "Markdown Syntax (sẽ ở khóa nâng cao nhé)",
             cover:
-              "https://trungquandev.com/wp-coPntent/uploads/2022/07/fair-mern-stack-advanced-banner-trungquandev.jpg",
+              "https://images.unsplash.com/photo-1714165860646-b8de17af3bc8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D",
             memberIds: ["test-user-id-01"],
             comments: ["test comment 01", "test comment 02"],
             attachments: [

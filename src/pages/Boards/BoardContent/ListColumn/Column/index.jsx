@@ -24,8 +24,12 @@ import ListCard from "./ListCard";
 import PropTypes from "prop-types";
 import { mapOrder } from "~/utils/sort";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 Column.propTypes = {
   column: PropTypes.shape({
+    _id: PropTypes.string,
     column: PropTypes.object,
     title: PropTypes.string,
     cards: PropTypes.object,
@@ -34,6 +38,16 @@ Column.propTypes = {
 };
 
 function Column({ column }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column._id, data: { ...column } });
+
+  const DndKitColumnSyled = {
+    touchAction: "none",
+
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -45,6 +59,10 @@ function Column({ column }) {
   const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
   return (
     <Box
+      ref={setNodeRef}
+      style={DndKitColumnSyled}
+      {...attributes}
+      {...listeners}
       sx={{
         minWidth: "300px",
         maxWidth: "300px",
@@ -65,6 +83,7 @@ function Column({ column }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          cursor: "pointer",
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
