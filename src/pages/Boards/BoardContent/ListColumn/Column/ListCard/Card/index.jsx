@@ -11,8 +11,12 @@ import PeopleIcon from "@mui/icons-material/People";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import PropTypes from "prop-types";
 
+// import dnd-kit
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 Card.propTypes = {
   card: PropTypes.shape({
+    _id: PropTypes.string,
     card: PropTypes.object,
     title: PropTypes.string,
     cover: PropTypes.string,
@@ -31,8 +35,30 @@ function Card({ card }) {
     );
   };
 
+  // dnd-kit
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card._id, data: { ...card } });
+
+  const DndKitCardSyled = {
+    touchAction: "none",
+
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : undefined,
+  };
+
   return (
     <MuiCard
+      ref={setNodeRef}
+      style={DndKitCardSyled}
+      {...attributes}
+      {...listeners}
       sx={{
         maxWidth: 345,
         boxShadow: "0 1px 1px rgba(0,0,0,0.2)",

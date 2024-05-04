@@ -3,6 +3,8 @@ import { Box, Button } from "@mui/material";
 import Column from "./Column";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
+
+// import dnd-kit
 import {
   SortableContext,
   horizontalListSortingStrategy,
