@@ -51,9 +51,9 @@ function Column({ column }) {
 
   const DndKitColumnSyled = {
     touchAction: "none",
-
     transform: CSS.Translate.toString(transform),
     transition,
+    height: "inherit",
     opacity: isDragging ? 0.5 : undefined,
   };
 
