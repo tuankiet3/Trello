@@ -52,9 +52,10 @@ function BoardContent({ board }) {
   });
   const sensors = useSensors(mouseSensor);
   const [orderedColumns, setOrderedColumns] = useState([]);
-  const [activeId, setActiveId] = useState(null);
+  const [activeDragId, setActiveDragId] = useState(null);
   const [activeItemType, setActiveItemType] = useState(null);
   const [activeIdData, setActiveIdData] = useState(null);
+  const [oldColumnDragging, setOldColumnDragging] = useState(null);
 
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
@@ -69,12 +70,15 @@ function BoardContent({ board }) {
 
   // drag
   const handleDragStart = (event) => {
-    setActiveId(event?.active?.id);
+    setActiveDragId(event?.active?.id);
     setActiveItemType(
       event?.active?.data?.current?.columnId
         ? ACTIVE_DRAG_ITEM_TYPE.CARD
         : ACTIVE_DRAG_ITEM_TYPE.COLUMN
     );
+    if (event?.active?.data?.current?.columnId) {
+      setOldColumnDragging(findColumnByCardId(event?.active?.id));
+    }
     setActiveIdData(event?.active?.data?.current);
   };
 
@@ -96,6 +100,7 @@ function BoardContent({ board }) {
     const overColumn = findColumnByCardId(overCardId);
 
     if (!activeColumn || !overColumn) return;
+
     if (activeColumn._id !== overColumn._id) {
       setOrderedColumns((prevColumns) => {
         // location want drop card
@@ -167,28 +172,74 @@ function BoardContent({ board }) {
 
     // check dragging a card or column
     if (activeItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
-      console.log("dragging card");
-      return;
+      // get id and data of card dragging
+      const {
+        id: activeDraggingCardId,
+        data: { current: activeDraggingCardData },
+      } = active;
+      // get id location drop
+      const { id: overCardId } = over;
+
+      // get 2 column by id active and over
+      const activeColumn = findColumnByCardId(activeDraggingCardId);
+      const overColumn = findColumnByCardId(overCardId);
+
+      if (!activeColumn || !overColumn) return;
+      if (oldColumnDragging._id !== overColumn._id) {
+        // different column
+      } else {
+        // same column
+        const oldCardIndex = oldColumnDragging?.cards.findIndex(
+          (card) => card._id === activeDragId
+        );
+        const newCardIndex = overColumn?.cards.findIndex(
+          (card) => card._id === overCardId
+        );
+        const dndOrderdCards = arrayMove(
+          oldColumnDragging.cards,
+          oldCardIndex,
+          newCardIndex
+        );
+        setOrderedColumns((prevColumns) => {
+          // clone array orderedColumn processing without affecting the orderedColumn
+          const nextColumns = cloneDeep(prevColumns);
+          console.log(activeColumn);
+          // find column want drop
+          const targetColumn = nextColumns.find(
+            (column) => column._id === overColumn._id
+          );
+          targetColumn.cards = dndOrderdCards;
+          targetColumn.cardOrderIds = dndOrderdCards.map((card) => card._id);
+          return nextColumns;
+        });
+      }
     }
     if (
       activeItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN &&
       active.id !== over.id
     ) {
       // find old index from active
-      const oldIndex = orderedColumns.findIndex((c) => c._id === active.id);
+      const oldColumnIndex = orderedColumns.findIndex(
+        (c) => c._id === active.id
+      );
 
       // find new index from over
-      const newIndex = orderedColumns.findIndex((c) => c._id === over.id);
+      const newColumnIndex = orderedColumns.findIndex((c) => c._id === over.id);
 
       // use arrayMove reorganize column
-      const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex);
+      const dndOrderedColumns = arrayMove(
+        orderedColumns,
+        oldColumnIndex,
+        newColumnIndex
+      );
       setOrderedColumns(dndOrderedColumns);
     }
 
     // after drog reset data is null
-    setActiveId(null);
+    setActiveDragId(null);
     setActiveItemType(null);
     setActiveIdData(null);
+    setOldColumnDragging(null);
   };
 
   return (
