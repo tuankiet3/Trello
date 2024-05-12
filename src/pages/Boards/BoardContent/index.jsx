@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import ListColunn from "./ListColumn";
 import PropTypes from "prop-types";
 import { mapOrder } from "~/utils/sort";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Column from "./ListColumn/Column";
 import Card from "./ListColumn/Column/ListCard/Card";
 
@@ -18,6 +18,10 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   closestCorners,
+  pointerWithin,
+  rectIntersection,
+  getFirstCollision,
+  closestCenter,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 BoardContent.propTypes = {
@@ -56,7 +60,8 @@ function BoardContent({ board }) {
   const [activeItemType, setActiveItemType] = useState(null);
   const [activeIdData, setActiveIdData] = useState(null);
   const [oldColumnDragging, setOldColumnDragging] = useState(null);
-
+  // last location intersections
+  const lastOverId = useRef(null);
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
   }, [board]);
@@ -301,12 +306,51 @@ function BoardContent({ board }) {
     setOldColumnDragging(null);
   };
 
+  // args = arguments = tham số
+  const collisionDetectionStrategy = useCallback(
+    (args) => {
+      // if dragging column then return old array
+      if (activeItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN)
+        return closestCorners({ ...args });
+      // find location intersections with pointer
+      const pointerIntersections = pointerWithin(args);
+      // The intersections detection algorithm will return the array intersection to varibale name  interactions
+      const intersections =
+        pointerIntersections.length > 0
+          ? pointerIntersections
+          : rectIntersection(args);
+      // find first overId in intersections
+      let overId = getFirstCollision(intersections, "id");
+      if (overId) {
+        const intersectColumn = orderedColumns.find(
+          (column) => column._id === overId
+        );
+
+        if (intersectColumn) {
+          overId = closestCenter({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(
+              (container) =>
+                container.id !== overId &&
+                intersectColumn.cardOrderIds.includes(container.id)
+            ),
+          })[0].id;
+        }
+
+        lastOverId.current = overId;
+        return [{ id: overId }];
+      }
+      return lastOverId.current ? [{ id: lastOverId.current }] : [];
+    },
+    [activeItemType, orderedColumns]
+  );
+
   return (
     <DndContext
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
-      collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
       sensors={sensors}
     >
       <Box>
