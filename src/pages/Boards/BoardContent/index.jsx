@@ -2,12 +2,13 @@ import { Box } from "@mui/material";
 import ListColunn from "./ListColumn";
 import PropTypes from "prop-types";
 import { mapOrder } from "~/utils/sort";
+import { generatePlaceholder } from "~/utils/formatters";
+
 import { useEffect, useState, useCallback, useRef } from "react";
 import Column from "./ListColumn/Column";
 import Card from "./ListColumn/Column/ListCard/Card";
-
 // import lodash
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
 
 // import dnd-kit
 import {
@@ -141,6 +142,10 @@ function BoardContent({ board }) {
           nextActiveColumn.cards = nextActiveColumn.cards.filter(
             (card) => card._id !== activeDraggingCardId
           );
+          // check empty column add FE_Placeholder
+          if (isEmpty(nextActiveColumn.cards)) {
+            nextActiveColumn.cards = [generatePlaceholder(nextActiveColumn)];
+          }
           // refesh data in cardOrderIds
           nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
             (card) => card._id
@@ -151,18 +156,24 @@ function BoardContent({ board }) {
           nextOverColumn.cards = nextOverColumn.cards.filter(
             (card) => card._id !== activeDraggingCardId
           );
+
           // add card dragging to overColumn by new index
           nextOverColumn.cards = nextOverColumn.cards.toSpliced(
             newCardIndex,
             0,
             activeDraggingCardData
           );
+
+          nextOverColumn.cards = nextOverColumn.cards.filter(
+            (card) => !card.FE_Placeholder
+          );
+
           // refesh data in cardOrderIds
           nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
             (card) => card._id
           );
         }
-
+        console.log(nextColumns);
         return nextColumns;
       });
     }
@@ -267,7 +278,6 @@ function BoardContent({ board }) {
         setOrderedColumns((prevColumns) => {
           // clone array orderedColumn processing without affecting the orderedColumn
           const nextColumns = cloneDeep(prevColumns);
-          console.log(activeColumn);
           // find column want drop
           const targetColumn = nextColumns.find(
             (column) => column._id === overColumn._id
@@ -307,6 +317,7 @@ function BoardContent({ board }) {
   };
 
   // args = arguments = tham số
+  // fix bug flickering
   const collisionDetectionStrategy = useCallback(
     (args) => {
       // if dragging column then return old array
@@ -325,7 +336,6 @@ function BoardContent({ board }) {
         const intersectColumn = orderedColumns.find(
           (column) => column._id === overId
         );
-
         if (intersectColumn) {
           overId = closestCenter({
             ...args,
@@ -334,7 +344,7 @@ function BoardContent({ board }) {
                 container.id !== overId &&
                 intersectColumn.cardOrderIds.includes(container.id)
             ),
-          })[0].id;
+          })[0]?.id;
         }
 
         lastOverId.current = overId;

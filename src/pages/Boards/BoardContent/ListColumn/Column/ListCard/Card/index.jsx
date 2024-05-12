@@ -23,6 +23,7 @@ Card.propTypes = {
     memberIds: PropTypes.object,
     comments: PropTypes.object,
     attachments: PropTypes.object,
+    FE_Placeholder: PropTypes.bool,
   }),
 };
 
@@ -52,6 +53,7 @@ function Card({ card }) {
     transition,
     opacity: isDragging ? 0.5 : undefined,
     border: isDragging ? "1px solid #3498db" : undefined,
+    display: card?.FE_Placeholder ? "none" : "block",
   };
 
   return (
